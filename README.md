@@ -1,8 +1,8 @@
-# TaskDAG
+# TaskTree
 
 ## Overview
 
-TaskDAG is a CLI task and project management program. 
+TaskTree is a CLI task and project management program. 
 
 Features:
 - Create and remove projects (project metadata + a dependency graph of tasks)
