@@ -155,6 +155,7 @@ impl TaskTree {
             bold_text("created"),
             task.get_created_timestamp(),
         ));
+
         match task.get_desc() {
             Some(desc) => info.push_str(&format!(
                 "\n{}: {}",
@@ -162,6 +163,19 @@ impl TaskTree {
                 desc,
             )),
             _ => (),
+        }
+
+        let children = self.children.get(task_id).unwrap();
+        if children.len() == 0 {
+            return Ok(info);
+        }
+    
+        info.push_str(&format!("\n{}", bold_text("dependencies:\n")));
+        for child_id in children {
+            info.push_str(&format!(
+                "{}\n",
+                self.get_task_repr(&child_id).unwrap()
+            ));
         }
         Ok(info)
     }
@@ -889,7 +903,7 @@ pub mod tests {
         // (3) (4)
         //  |  /|\
         //  | / | \
-        // (5) [6] (7)
+        // (5) (6) (7)
 
         // here, deps should have all available dependencies
         let deps = tree.get_dependencies_helper(&tid1, false, true, None, &mut HashSet::new());
